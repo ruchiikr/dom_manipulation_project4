@@ -12,13 +12,11 @@ let leadingSeconds = 0;
 let leadingMinutes = 0;
 let leadingHours = 0;
 
-// Variables for set intervals & timestatus
-
+// Variables for set intervals & timer status
 let timerInterval = null;
 let timerStatus = "stopped";
 
 // Stop Watch Function
-
 function stopWatch() {
   seconds++;
 
@@ -32,40 +30,28 @@ function stopWatch() {
     }
   }
 
-  if (seconds < 10) {
-    leadingSeconds = "0" + seconds.toString();
-  } else {
-    leadingSeconds = seconds;
-  }
-  if (minutes < 10) {
-    leadingMinutes = "0" + minutes.toString();
-  } else {
-    leadingMinutes = minutes;
-  }
-  if (hours < 10) {
-    leadingHours = "0" + hours.toString();
-  } else {
-    leadingHours = hours;
-  }
+  leadingSeconds = seconds < 10 ? "0" + seconds : seconds;
+  leadingMinutes = minutes < 10 ? "0" + minutes : minutes;
+  leadingHours = hours < 10 ? "0" + hours : hours;
 
-  let displayTimer = document.getElementById('timer').innerText =
+  document.getElementById('timer').innerText =
     leadingHours + ":" + leadingMinutes + ":" + leadingSeconds;
 }
 
+// Start/Stop button toggle
 startStopBtn.addEventListener('click', function () {
   if (timerStatus === "stopped") {
     timerInterval = window.setInterval(stopWatch, 1000);
-    document.getElementById('startStopBtn').innerHTML =
-      '<i class="fa-solid fa-pause" id="pause"></i>';
+    startStopBtn.innerHTML = "⏸"; // Pause icon
     timerStatus = "started";
   } else {
     window.clearInterval(timerInterval);
-    document.getElementById('startStopBtn').innerHTML =
-      '<i class="fa-solid fa-play" id="play"></i>';
+    startStopBtn.innerHTML = "▶"; // Play icon
     timerStatus = "stopped";
   }
 });
 
+// Reset button
 resetBtn.addEventListener('click', function () {
   window.clearInterval(timerInterval);
   seconds = 0;
@@ -73,4 +59,6 @@ resetBtn.addEventListener('click', function () {
   hours = 0;
 
   document.getElementById('timer').innerHTML = "00:00:00";
+  startStopBtn.innerHTML = "▶"; // Reset to play icon
+  timerStatus = "stopped";
 });
